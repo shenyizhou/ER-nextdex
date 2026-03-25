@@ -1,0 +1,76 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  # 1. Frontend Testing
+  - name: test-frontend
+    image: node:20
+    commands:
+      - npm install
+      - npx vitest run
+
+  # 2. Frontend Build
+  - name: build-frontend
+    # Use Node 18 (Alpine) for lighter footprint
+    image: node:18-alpine
+    environment:
+      # Reduced to 1024MB to match build script and fit within 2GB host limits
+      NODE_OPTIONS: '--max-old-space-size=1024'
+    commands:
+      # Diagnostic: Check memory and swap status inside container
+      - free -m
+      - npm ci
+      - npm run build
+
+  # 3. Deploy Frontend (Direct Copy)
+  # Since it's the same server, we can mount the host directory and use 'cp'
+  - name: deploy-frontend
+    image: alpine
+    volumes:
+      - name: wwwroot
+        path: /var/www/ernext
+    commands:
+      - mkdir -p /var/www/ernext
+      - cp -r dist/* /var/www/ernext/
+    when:
+      branch:
+        - main
+        - master
+
+  # 4. Backend Testing (Skipped: Run this from root or express-mj directory)
+  # - name: test-backend
+  #   image: node:20
+  #   commands:
+  #     - cd express-mj
+  #     - npm install
+  #     - npm test
+
+  # 5. Deploy Backend (Skipped: Run this from root or express-mj directory)
+  # - name: deploy-backend
+  #   image: docker:24.0.2
+  #   volumes:
+  #     - name: dockersock
+  #       path: /var/run/docker.sock
+  #   commands:
+  #     - docker stop express-mj || true
+  #     - docker rm express-mj || true
+  #     - docker run -d --name express-mj --restart unless-stopped -p 3001:3001 -v /data/express-mj/data:/app/data:rw -e NODE_ENV=production express-mj:latest
+  #   when:
+  #     branch:
+  #       - main
+  #       - master
+
+# volumes:
+#   - name: wwwroot
+#     host:
+#       path: /var/www/ernext # Host directory for static files
+#   - name: dockersock
+#     host:
+#       path: /var/run/docker.sock
+
+trigger:
+  branch:
+    - main
+    - master
+    - feature/*

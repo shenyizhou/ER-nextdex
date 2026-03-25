@@ -1,0 +1,45 @@
+kind: pipeline
+type: docker
+name: default
+
+steps:
+  # 1. 编译数据与翻译
+  - name: build-data
+    image: node:20
+    environment:
+      NODE_OPTIONS: '--max-old-space-size=1024'
+    commands:
+      # 安装项目依赖
+      - npm ci
+      # 编译 TS 代码并生成最新的图鉴数据 gameData.json
+      - npm run run
+      # 运行翻译脚本生成 gameData.zh.json (基于 glossary)
+      - npm run translate-gamedata
+      # 如果需要跑 webpack 压缩，可以保留这行
+      # - npm run webpack
+
+  # 2. 部署前端 (复制到宿主机挂载目录)
+  - name: deploy-frontend
+    image: alpine
+    volumes:
+      - name: wwwroot
+        path: /var/www/ernext
+    commands:
+      - mkdir -p /var/www/ernext
+      # 网站核心文件在 static 目录下，包含生成的最新 gameData 数据，全部复制到宿主机的 web 目录
+      - cp -r static/* /var/www/ernext/
+    when:
+      branch:
+        - main
+        - master
+
+volumes:
+  - name: wwwroot
+    host:
+      path: /var/www/ernext # 这里是宿主机上配置给 Nginx/Caddy 等 Web 服务器的静态目录
+
+trigger:
+  branch:
+    - main
+    - master
+    - feature/*
