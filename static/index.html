@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en us">
+<html lang="zh-CN">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Official Pokémon Elite Redux online pokedex, Find any Species, Ability, Move, Trainer, Encounters for your game version on this interactive application."> 
+    <meta name="description" content="Elite Redux 官方中文图鉴，支持按版本查询宝可梦、特性、招式、训练师与遭遇地点。"> 
     <!--Maybe i'd set this iOS fix again and this time it will work-->
     <meta http-equiv="Content-Security-Policy" content="img-src * 'self' data:; default-src * 'self' gap: ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; ">
     <title>ER NextDex</title>
@@ -38,7 +38,7 @@
     </script>
     <div id="top-header" class="header-gradient-ER">
         <span class="main-title">
-            Elite Redux Nextdex
+            Elite Redux NextDex
         </span>
         <div style="display: flex;">
             <img id="filter-icon" src="./icons/filter.png" alt="">
@@ -49,14 +49,14 @@
     </div>
     <div id="search-wrapper" class="search-wrapper">
         <div class="search-keys-wrapper">
-            <input type="button" id="search-keys" name="search-keys" value="Name">
+            <input type="button" id="search-keys" name="search-keys" value="名称">
             <div id="search-keys-selections" style="display: none;"></div>
         </div>
         <label class="main-search-label" for="search-bar">
             <input type="search" name="" id="search-bar" autocomplete="off">
             <div id="search-suggestion" data-suggestion="0"></div>
         </label>
-        <div id="to-filter" class="filter-interactible"><span>=> Filters</span></div>
+        <div id="to-filter" class="filter-interactible"><span>添加筛选</span></div>
     </div>
     <div id="non-header">
         <main>
@@ -68,7 +68,7 @@
                         <img id="species-front" class="interactible">
                         <div class="species-abi-inn">
                             <div class="abi-inn-info">
-                                Abilities
+                                特性
                             </div>
                             <div id="species-abilities">
 
@@ -76,7 +76,7 @@
                         </div>
                         <div class="species-abi-inn">
                             <div class="abi-inn-info">
-                                Innates
+                                天性
                             </div>
                             <div id="species-innates">
 
@@ -84,37 +84,37 @@
                         </div>
                         <div id="species-basestats" class="interactible">
                             <div id="BHP" class="stat-row">
-                                <span class="stat-name">HP</span>
+                                <span class="stat-name">生命</span>
                                 <span class="stat-num">0</span>
                                 <div id="BHPBar" class="stat-bar"></div>
                             </div>
                             <div id="BAT" class="stat-row">
-                                <span class="stat-name">Atk</span>
+                                <span class="stat-name">攻击</span>
                                 <span class="stat-num">0</span>
                                 <div id="BATBar" class="stat-bar"></div>
                             </div>
                             <div id="BDF" class="stat-row">
-                                <span class="stat-name">Def</span>
+                                <span class="stat-name">防御</span>
                                 <span class="stat-num">0</span>
                                 <div id="BDFBar" class="stat-bar"></div>
                             </div>
                             <div id="BSA" class="stat-row">
-                                <span class="stat-name">SpA</span>
+                                <span class="stat-name">特攻</span>
                                 <span class="stat-num">0</span>
                                 <div id="BSABar" class="stat-bar"></div>
                             </div>
                             <div id="BSD" class="stat-row">
-                                <span class="stat-name">SpD</span>
+                                <span class="stat-name">特防</span>
                                 <span class="stat-num">0</span>
                                 <div id="BSDBar" class="stat-bar"></div>
                             </div>
                             <div id="BSP" class="stat-row">
-                                <span class="stat-name">Spe</span>
+                                <span class="stat-name">速度</span>
                                 <span class="stat-num">0</span>
                                 <div id="BSPBar" class="stat-bar"></div>
                             </div>
                             <div id="BST" class="stat-row">
-                                <span class="stat-name">BST</span>
+                                <span class="stat-name">总和</span>
                                 <span class="stat-num">0</span>
                                 <div id="BSTBar" class="stat-bar"></div>
                             </div>
@@ -134,17 +134,17 @@
                             </div>
                         </div>
                         <div class="species-switch">
-                            <div id="switch-moves" class="btn sel-active">Moves</div>
-                            <div id="switch-evos-locs" class="btn sel-n-active">Evo & Loca</div>
-                            <div id="switch-misc" class="btn sel-n-active">Misc</div>
-                            <div id="switch-sets" class="btn sel-n-active">Sets</div>
+                            <div id="switch-moves" class="btn sel-active">招式</div>
+                            <div id="switch-evos-locs" class="btn sel-n-active">进化与地点</div>
+                            <div id="switch-misc" class="btn sel-n-active">其他</div>
+                            <div id="switch-sets" class="btn sel-n-active">配置</div>
                         </div>
                     </div>
                     <div id="species-bot" class="species-bot">
                         <div id="species-moves" class="species-sub-pannel active-sub-panel">
                             <div class="species-bot-row" id="learnset-title">
                                 <div class="species-moves-title">
-                                    Learn Sets
+                                    升级招式
                                 </div>
                                 <div class="species-move-list" id="learnset">
 
@@ -152,7 +152,7 @@
                             </div>
                             <div class="species-bot-row" id="tmhm-title">
                                 <div class="species-moves-title">
-                                    TM/HM
+                                    招式机
                                 </div>
                                 <div class="species-move-list" id="tmhm">
 
@@ -160,7 +160,7 @@
                             </div>
                             <div class="species-bot-row"  id="tutor-title">
                                 <div class="species-moves-title">
-                                    Tutor moves
+                                    教学招式
                                 </div>
                                 <div class="species-move-list" id="tutor">
 
@@ -168,13 +168,13 @@
                             </div>
                             <div class="species-bot-row" id="eggpreevo-title">
                                 <div class="species-moves-title" id="eggmoves-title">
-                                    Egg Moves
+                                    蛋招式
                                 </div>
                                 <div class="species-move-list" id="eggmoves">
 
                                 </div>
                                 <div class="species-moves-title" id="preevomoves-title">
-                                    Pre Evo Moves
+                                    前代进化招式
                                 </div>
                                 <div class="species-move-list" id="preevomoves">
 
@@ -219,23 +219,23 @@
                         <div class="builder-mon"></div>
                         <div class="builder-tools">
                             <div class="bi-btn-row">
-                                <div id="defensive-cov" class="sel-active"><span>Defensive Coverage</span></div>
-                                <div id="offensive-cov" class="sel-n-active"><span>Offensive Coverage</span></div>
+                                <div id="defensive-cov" class="sel-active"><span>防御覆盖</span></div>
+                                <div id="offensive-cov" class="sel-n-active"><span>进攻覆盖</span></div>
                             </div>
                             <div id="builder-def-cov">
                                 
                             </div>
                             <div id="builder-off-cov" style="display: none;">
-                                <span>click to see which pokemon has a super effective move against</span>
+                                <span>点击属性可查看哪些宝可梦拥有克制该属性的招式</span>
                                 <div id="builder-off-types" class="builder-type-row">
 
                                 </div>
                             </div>
                             <div id="builder-screenshot" class="btn btn-hover">
-                                <span>Team as a screenshot</span>
+                                <span>将队伍导出为截图</span>
                             </div>
                             <div id="builder-import" class="btn btn-hover">
-                                <span>Import / Export</span>
+                                <span>导入 / 导出</span>
                             </div>
                         </div>
                     </div>
@@ -253,24 +253,24 @@
                     <div class="moves-top">
                         <div class="moves-top-sub">
                             <div class="moves-large">
-                                <span>Power</span>
+                                <span>威力</span>
                                 <div id="moves-pwr"></div>
                             </div>
                             <div class="moves-xlarge">
                                 <div class="xlarge-row">
-                                    <span>acc</span>
+                                    <span>命中</span>
                                     <div id="moves-acc"></div>
                                 </div>
                                 <div class="xlarge-row">
-                                    <span>pp</span>
+                                    <span>PP</span>
                                     <div id="moves-pp"></div>
                                 </div>
                                 <div class="xlarge-row">
-                                    <span>Priority</span>
+                                    <span>优先度</span>
                                     <div id="moves-prio"></div>
                                 </div>
                                 <div class="xlarge-row">
-                                    <span>Eff. Chance</span>
+                                    <span>追加概率</span>
                                     <div id="moves-chance"></div>
                                 </div>
                             </div>
@@ -279,14 +279,14 @@
                             <img id="moves-split" class="filter-interactible">
                             <div id="moves-target">
                                 <div class="target-row">
-                                    <div id="foe1" class="foe">Foe</div>
-                                    <div id="foe2" class="foe">Foe</div>
-                                    <div id="foe3" class="foe">Foe</div>
+                                    <div id="foe1" class="foe">对手</div>
+                                    <div id="foe2" class="foe">对手</div>
+                                    <div id="foe3" class="foe">对手</div>
                                 </div>
                                 <div class="target-row">
-                                    <div id="ally1" class="ally">ally</div>
-                                    <div id="allySelf" class="self">self</div>
-                                    <div id="ally2" class="ally">ally</div>
+                                    <div id="ally1" class="ally">我方</div>
+                                    <div id="allySelf" class="self">自身</div>
+                                    <div id="ally2" class="ally">我方</div>
                                 </div>
                             </div>
                         </div>
@@ -310,31 +310,31 @@
                 </div>
                 <div id="locations-data" class="data-data">
                     <div class="location-field">
-                        <div class="location-title">Land</div>
+                        <div class="location-title">陆地</div>
                         <div id="locations-land" class="location-table"></div>
                     </div>
                     <div class="location-field">
-                        <div class="location-title">Water</div>
+                        <div class="location-title">水面</div>
                         <div id="locations-water" class="location-table"></div>
                     </div>
                     <div class="location-field">
-                        <div class="location-title">Fishing</div>
+                        <div class="location-title">垂钓</div>
                         <div id="locations-fish" class="location-table"></div>
                     </div>
                     <div class="location-field">
-                        <div class="location-title">Honey</div>
+                        <div class="location-title">甜甜蜜</div>
                         <div id="locations-honey" class="location-table"></div>
                     </div>
                     <div class="location-field">
-                        <div class="location-title">Rock-Smash</div>
+                        <div class="location-title">碎岩</div>
                         <div id="locations-rock" class="location-table"></div>
                     </div>
                     <div class="location-field">
-                        <div class="location-title">Hiddens</div>
+                        <div class="location-title">隐藏遭遇</div>
                         <div id="locations-hidden" class="location-table"></div>
                     </div>
                     <div class="location-field">
-                        <div class="location-title">Given</div>
+                        <div class="location-title">赠送</div>
                         <div id="locations-given" class="location-table"></div>
                     </div>
 
@@ -347,7 +347,7 @@
                 <div id="trainers-data" class="data-data">
                     <div id="trainers-infobar" class="trainers-infobar">
                         <div id="trainers-name"></div>
-                        <div id="trainers-double">Double!</div>
+                        <div id="trainers-double">双打！</div>
                         <div id="trainers-normal"></div>
                         <div id="trainers-elite"></div>
                         <div id="trainers-hell"></div>
@@ -362,35 +362,35 @@
         </main>
         <aside>
             <div class="side-btn btn-active interactible" id="btn-species">
-                <span class="big-select interactible">Species</span>
-                <span class="small-select interactible">Builder</span>
+                <span class="big-select interactible">宝可梦</span>
+                <span class="small-select interactible">队伍构筑</span>
             </div>
             <div class="side-btn btn-n-active interactible" id="btn-abis">
                 <span>
-                    Abilities
+                    特性
                 </span>
             </div>
             <div class="side-btn btn-n-active interactible" id="btn-moves">
-                <span>Moves</span>
+                <span>招式</span>
             </div>
             <div class="side-btn btn-n-active interactible" id="btn-locations">
-                <span>Locations</span>
+                <span>地点</span>
             </div>
             <div class="side-btn btn-n-active" id="btn-trainers">
-                <span>Trainers</span>
+                <span>训练师</span>
             </div>
         </aside>
     </div>
     <div id="filter-frame" style="display: none;">
         <div class="filter-panel">
             <div class="filter-title">
-                <span>Filter</span>
-                <div class="filter-help-btn sel">Help</div>
+                <span>筛选</span>
+                <div class="filter-help-btn sel">帮助</div>
                 <label for="filter-main-operator">
-                    Global search operator
+                    全局筛选逻辑
                 </label>
                 <select id="filter-main-operator" name="filter-main-operator"></select>
-                <div id="filter-clear-all" class="sel">Delete All</div>
+                <div id="filter-clear-all" class="sel">清空全部</div>
             </div>
             <div class="filter-data" id="filter-data">
                
@@ -398,123 +398,119 @@
         </div>
         <div id="filter-help" style="display: none;">
             <div class="filter-help-title">
-                <div class="filter-help-btn sel">Close</div>
+                <div class="filter-help-btn sel">关闭</div>
             </div>
-            <p> So far what you have to understand is that a search is composed of 4 things: </p>
-            <li>- The search <strong>key</strong></li>
-            <p> a key, is a field, if you search by type on species, you will have all pokemon
-                that have this type, and for moves the moves of the type.
-                Note that panels are reactive to a selected number of keys,
-                asking for a Fire type on an ability pannel would not make sense.
-                At least so far (you can still ask on the discord to implement new keys)
+            <p>目前你只需要理解，筛选由 4 个部分组成：</p>
+            <li>- 搜索的<strong>键</strong></li>
+            <p>键就是字段。比如在宝可梦面板里按属性搜索，会显示拥有该属性的宝可梦；在招式面板里则会显示对应属性的招式。
+                需要注意的是，不同面板只支持部分字段，
+                比如在特性面板里按火属性搜索就没有意义。
+                目前功能就是这样设计的，后续如果需要更多字段可以再补。
             </p>
-            <li>- The search <strong>text</strong></li>
+            <li>- 搜索的<strong>文本</strong></li>
             <p>
-                The text is what you're searching for considering the key, if the key is "type" then
-                entering "bulbasaur" would show nothing because there is no types called bulbasaur
+                文本就是你要搜索的内容。如果键是“属性”，那输入“Bulbasaur”自然不会有结果，
+                因为并不存在叫 Bulbasaur 的属性。
             </p>
-            <li>- The search <strong>Not</strong></li>
+            <li>- 搜索的<strong>排除</strong></li>
             <p>
-                It's an On/Off button that simply means you don't want this to be shown.
-                If you want all but no water type, ask for water types and click the <strong>¿?</strong>
-                button
+                这是一个开关，表示你不希望结果中出现某项内容。
+                例如你想看“除了水属性之外”的结果，就先添加水属性筛选，再点一下 <strong>非</strong> 按钮即可。
             </p>
-            <li>- The search <strong>operator</strong></li>
-            <p> If you have multiple filters on, you may want to have all to Match </p>
-            <li><strong>AND</strong></li>
-            <p> AND matches all filters included with no exception, if you ask for water type AND ground type
-                ,only pokemons that have this double typing will show
+            <li>- 搜索的<strong>逻辑</strong></li>
+            <p>当你启用多个筛选条件时，可以通过逻辑关系来决定结果的匹配方式。</p>
+            <li><strong>且</strong></li>
+            <p>“且”表示必须同时满足所有条件。比如同时筛选水属性和地面属性时，
+                只会显示同时拥有这两种属性的宝可梦。
             </p>
-            <li><strong>OR</strong></li>
-            <p> OR means that for one specie to show up it has
-                to at least get 1 of right, it can be 1 in 500 filters as long 1 matches
+            <li><strong>或</strong></li>
+            <p>“或”表示只要满足其中一个条件即可显示。
+                即使你加了很多筛选项，只要命中其中一个就会出现在结果里。
             </p>
-            <li><strong>XOR</strong></li>
+            <li><strong>异或</strong></li>
             <p>
-                XOR means that you're asking for only 1 filter to match, not 2, not 0, 1.
-                You may ask for a water type or for a grass type, but not both at the same type. I don't expect
-                people to use this operator that said.
+                “异或”表示只能命中 1 个条件，不能是 0 个，也不能同时命中多个。
+                例如你可以筛选水属性或草属性，但不能同时兼具两者。
             </p>
             <hr>
-            <p>Please note that each panel (Specie, Abilities, Moves) are separate search, 
-                so if you look at abilities by name in the panel ability, it will not affect
-                the species panel, if you want to sort out pokemon species by abilities, you have to 
-                affect it from the species related search.
+            <p>请注意，每个面板（宝可梦、特性、招式等）的筛选彼此独立。
+                也就是说，你在特性面板里按名称搜索，不会影响宝可梦面板。
+                如果你想按特性来筛选宝可梦，需要在宝可梦相关的筛选里进行。
             </p>
             <hr>
             <p>
-                the mode monotype settings is there for the type selection to match only monotyped pokemons,
-                (abilities induced types aren't taken in consideration)
+                “单属性模式”设置会让属性筛选只匹配单属性宝可梦，
+                由特性额外赋予的属性不会计入其中。
             </p>
         </div>
     </div>
     <div id="settings-frame" style="display: none;">
         <div class="versionning">
-            <label for="versions">Game Version</label>
+            <label for="versions">游戏版本</label>
             <select name="versions" id="versions"></select>
-            <label for="compare-versions">Compare to</label>
+            <label for="compare-versions">对比版本</label>
             <select name="compare-versions" id="compare-versions" selected="none">
-                <option value="none">None</option>
-                <option value="Vanilla">Vanilla</option>
+                <option value="none">无</option>
+                <option value="Vanilla">原版</option>
             </select>
         </div>
         <div class="settings-row">
-            <button id="open-team-savefile">Import Team from savefile</button>
+            <button id="open-team-savefile">从存档导入队伍</button>
         </div>
         <div class="settings-row">
-            <button id="import-comsets">Import community sets from file</button>
-            <button id="export-comsets">Export community sets to file</button>
+            <button id="import-comsets">从文件导入社区配置</button>
+            <button id="export-comsets">将社区配置导出到文件</button>
         </div>
         <div class="settings-row">
-            <button id="force-refresh-data">Force Refresh Data</button>
+            <button id="force-refresh-data">强制刷新数据</button>
         </div>
         <hr id="settings-main">
         <div class="settings-row">
-            <span>Store gamedata locally: </span>
-            <label for="disable-storage">Disable</label>
+            <span>本地缓存游戏数据：</span>
+            <label for="disable-storage">关闭</label>
             <input type="radio" name="settings-storage" id="disable-storage">
-            <label for="enable-storage">Enable</label>
+            <label for="enable-storage">开启</label>
             <input type="radio" name="settings-storage" id="enable-storage" checked>
         </div>
         <div class="settings-row">
-            <span>Mode monotype: </span>
-            <label for="disable-monotype">Disable</label>
+            <span>单属性模式：</span>
+            <label for="disable-monotype">关闭</label>
             <input type="radio" name="settings-monotype" id="disable-monotype" checked>
-            <label for="enable-monotype">Enable</label>
+            <label for="enable-monotype">开启</label>
             <input type="radio" name="settings-monotype" id="enable-monotype">
         </div>
         <div class="settings-row">
-            <span>Export team format: </span>
-            <label for="disable-export-discord">Raw</label>
+            <span>队伍导出格式：</span>
+            <label for="disable-export-discord">原始文本</label>
             <input type="radio" name="settings-export-discord" id="disable-export-discord" checked>
-            <label for="enable-export-discord">Discord embed</label>
+            <label for="enable-export-discord">Discord 嵌入</label>
             <input type="radio" name="settings-export-discord" id="enable-export-discord">
         </div>
         <div class="settings-row">
-            <span>Hover hint for interactible presence: </span>
-            <label for="disable-interactible">Disable</label>
+            <span>悬停高亮可交互区域：</span>
+            <label for="disable-interactible">关闭</label>
             <input type="radio" name="settings-interactible" id="disable-interactible" checked>
-            <label for="enable-interactible">Enable</label>
+            <label for="enable-interactible">开启</label>
             <input type="radio" name="settings-interactible" id="enable-interactible">
         </div>
         <hr>
-        <button id="insanity">ACTIVATE INSANITY WARNING EPILEPSY</button>
+        <button id="insanity">开启炫彩模式（注意频闪）</button>
         <hr>
         <div>
             <span>
-                You can try the palette editor at 
-                <a target="_blank" href="./palette_editor/index.html"> here </a>
+                你也可以在
+                <a target="_blank" href="./palette_editor/index.html">这里</a>
+                体验调色板编辑器
             </span>
         </div>
         <div class="settings-bottom">
-            <a target="_blank" href="https://github.com/ForwardFeed/ER-nextdex">Original git repository</a> 
-            and original concept from ${<a target="_blank" href="https://github.com/ForwardFeed">This person</a>}
-            <div class="thanks"> This was my biggest project so far, gratitude upon James Lyons for its sponsorship and
-            thanks for the people helping me (code contribution, support on the game structure and the game's community)</div>
+            <a target="_blank" href="https://github.com/ForwardFeed/ER-nextdex">原始 Git 仓库</a> 
+            ，原始项目概念来自 <a target="_blank" href="https://github.com/ForwardFeed">ForwardFeed</a>
+            <div class="thanks">这是作者迄今为止最大的项目之一，感谢 James Lyons 的赞助，以及所有在代码、游戏结构和社区方面提供帮助的人。</div>
         </div>
     </div>
     <div id="drop-savefile-frame" style="display: none;">
-        you can drop your savefile to import your pokemons!
+        将存档文件拖到这里即可导入你的宝可梦！
     </div>
     <script src="./vendor/fastdom.js"></script>
     <script src="./vendor/jquery3.7.1.min.js"></script>

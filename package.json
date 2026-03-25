@@ -12,6 +12,8 @@
     "webpack": "npx webpack --config webpack.config.js",
     "comparify": "node ./target/comparify.js",
     "restore-vanilla": "node ./target/restore_vanilla.js",
+    "extract-xlsm-glossary": "python3 ./tools/extract_xlsm_glossary.py",
+    "translate-gamedata": "npx tsc ./src/translate_gamedata.ts --module commonjs --target es2020 --outDir ./target_translate && node ./target_translate/translate_gamedata.js",
     "update-alpha": "npm run run -- -sv 2 -rd -o Alphatest"
   },
   "keywords": [
@@ -28,6 +30,7 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
+    "google-translate-api-x": "^10.7.2",
     "pngjs": "^7.0.0",
     "readable-stream-clone": "^1.0.0"
   }

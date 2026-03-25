@@ -130,6 +130,46 @@ export const search = {
     }
 }
 
+const queryKeyLabels = {
+    Name: "名称",
+    Type: "属性",
+    Ability: "特性",
+    resist: "抗性",
+    immune: "免疫",
+    weak: "弱点",
+    Move: "招式",
+    "Move-effect": "招式效果",
+    category: "分类",
+    prio: "优先度",
+    acc: "命中",
+    specie: "宝可梦",
+    target: "目标",
+    power: "威力",
+    map: "地图",
+    region: "区域",
+}
+
+const operatorLabels = {
+    AND: "且",
+    OR: "或",
+    XOR: "异或",
+}
+
+export function getQueryKeyLabel(key){
+    return queryKeyLabels[key] || key
+}
+
+export function getMainSearchKey(){
+    return $('#search-keys')[0]?.dataset.key || search.queryKeys[0]
+}
+
+export function setMainSearchKey(key){
+    const button = $('#search-keys')[0]
+    if (!button) return
+    button.dataset.key = key
+    $('#search-keys').val(getQueryKeyLabel(key))
+}
+
 export function onkeySearchFilter(ev, divSuggestions, inputSearch, callback){
     search.suggestionNode = divSuggestions
     search.suggestionInput = inputSearch
@@ -202,6 +242,7 @@ const evKeymap = {
 }
 
 export function setupSearch(){
+    setMainSearchKey(search.queryKeys[0])
     $('#search-keys').on('change', activateSearch)
     $('#search-bar').on('keyup search', (ev)=>{
         if (ev.originalEvent.key === "Tab"){
@@ -237,23 +278,23 @@ export function setupSearch(){
     $('#to-filter')[0].onclick = ()=>{
         const data = $('#search-bar').val()
         if (!data) return
-        appendFilter(search.panelUpdatesIndex,$('#search-keys').val(), data)
+        appendFilter(search.panelUpdatesIndex, getMainSearchKey(), data)
         $('#search-bar').val("")
         spinOnAddFilter()
     }
     for(const operator of search.operators){
         const option = document.createElement('option')
         option.value = operator
-        option.innerText =  operator
+        option.innerText =  operatorLabels[operator] || operator
         $('#filter-main-operator').append(option)
     }
     
     const keyNode = $('#search-keys-selections')
     for (const key of search.queryKeys){
         const option = document.createElement('div')
-        option.innerText = key
+        option.innerText = getQueryKeyLabel(key)
         option.onclick = ()=>{
-            $('#search-keys').val(key)
+            setMainSearchKey(key)
             $('#search-keys-selections').toggle()
             activateSearch()
         }
@@ -274,7 +315,7 @@ export function updateMainSearchKey(queryMap){
             nodes.eq(index).hide()
         }
     })
-    if (validID) {
-        $('#search-keys').val(nodes.eq(validID).text())
+    if (validID !== null) {
+        setMainSearchKey(search.queryKeys[validID])
     }
 }

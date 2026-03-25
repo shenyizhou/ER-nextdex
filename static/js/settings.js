@@ -16,6 +16,23 @@ const fontList = [
     'Inconsolata',
     'Determination',
 ]
+const settingsRowLabels = {
+    theme: "主题",
+    font: "字体",
+}
+const settingsOptionLabels = {
+    theme: {
+        blueish: "蓝调",
+        rushed: "疾速",
+        wood: "木质",
+        blahaj: "鲨鲨",
+    },
+    font: {
+        basis33: "Basis33",
+        Inconsolata: "Inconsolata",
+        Determination: "Determination",
+    },
+}
 export const settings = {
 
 }
@@ -57,7 +74,7 @@ export function saveSettings(){
         if (window.localStorage) window.localStorage.setItem(appSettings, JSON.stringify(settings))
     }
     catch(e){
-        alert("couldn't save settings, report to the dev if this message appear")
+        alert("设置保存失败，如果这个问题持续出现，请反馈给开发者。")
     }
 }
 
@@ -105,18 +122,23 @@ function changeTheme(){
 function toUpperCaseFirst(word){
     return word.charAt(0).toUpperCase() + word.slice(1)
 }
+function getSettingsRowLabel(name){
+    return settingsRowLabels[name] || toUpperCaseFirst(name)
+}
+function getSettingsOptionLabel(name, item){
+    return settingsOptionLabels[name]?.[item] || toUpperCaseFirst(item)
+}
 function setDynamicalRowOfSettings(name, settingsList, onchange){
-    const Name = toUpperCaseFirst(name)
     const frag = document.createDocumentFragment()
     const rowCore = document.createElement('div')
     rowCore.className = 'settings-row'
     const themeSpan = document.createElement('span')
-    themeSpan.innerText =  Name + ":"
+    themeSpan.innerText =  getSettingsRowLabel(name) + ":"
     frag.append(themeSpan)
     for (let i = 0 ; i < settingsList.length ; i++){
         const settingsItem = settingsList[i]
         const label = document.createElement('label')
-        label.innerText = toUpperCaseFirst(settingsItem)
+        label.innerText = getSettingsOptionLabel(name, settingsItem)
         label.htmlFor = `${name}-${settingsItem}`
         const input = document.createElement('input')
         input.type = "radio"
@@ -211,7 +233,7 @@ export function setupSettings(){
  */
 function cleanLocalStorage(){
     if (!localStorage) return // dunno
-    console.log('cleaned the local storage of data')
+    console.log('已清理本地缓存数据')
     const keys = Object.keys(localStorage) 
     for (const key of keys){
         //only delete the part that are about ER dex

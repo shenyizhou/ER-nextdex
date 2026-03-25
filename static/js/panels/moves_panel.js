@@ -8,6 +8,29 @@ import { getHintInteractibilityClass } from "../settings.js"
 
 export let matchedMoves
 let currentMoveID = 0
+
+const splitIconMap = {
+    物理: "PHYSICAL",
+    特殊: "SPECIAL",
+    变化: "STATUS",
+    取最高攻击: "PHYSICAL",
+    取最高伤害: "SPECIAL",
+    攻击防御: "HITS_DEF",
+    攻击特防: "HITS_SPDEF",
+    PHYSICAL: "PHYSICAL",
+    SPECIAL: "SPECIAL",
+    STATUS: "STATUS",
+    USE_HIGHEST_OFFENSE: "PHYSICAL",
+    USE_HIGHEST_DAMAGE: "SPECIAL",
+    HITS_DEF: "HITS_DEF",
+    HITS_SPDEF: "HITS_SPDEF",
+}
+
+function getSplitIconKey(splitID){
+    const split = gameData.splitT[splitID]
+    return splitIconMap[split] || "STATUS"
+}
+
 export function feedPanelMoves(moveID) {
     currentMoveID = moveID
     const move = gameData.moves[moveID]
@@ -19,7 +42,7 @@ export function feedPanelMoves(moveID) {
     $('#moves-pp').text(move.pp)
     $('#moves-prio').text(move.prio)
     setTarget(move.target)
-    $('#moves-split').attr("src", `./icons/${gameData.splitT[move.split]}.png`);
+    $('#moves-split').attr("src", `./icons/${getSplitIconKey(move.split)}.png`);
     $('#moves-split')[0].dataset.split = gameData.splitT[move.split].toLowerCase()
     //$('#moves-types').text('' + move.types.map((x)=>gameData.typeT[x]).join(' '))
     setTypes(move.types)
@@ -38,74 +61,73 @@ function setTypes(types) {
     }
 }
 const flagMap = {
-    "Makes Contact": "Has contact and Big Pecks boost",
-    "Kings Rock Affected": "Triggers King's rock",
-    "High Crit": "High crits chances",
-    "Iron Fist Boost": "Iron fist boost",
-    "Sheer Force Boost": "Sheer force boost",
-    "Keen Edge Boost": "Keen edge boost",
-    "Air Based": "Giant wings boost",
-    "Snatch Affected": "Can be snatched",
-    "Dance": "Dance",
-    "Always Crit": "Always Crit",
-    "Field Based": "Field Explorer boost",
-    "Striker Boost": "Striker boost",
-    "Two Strikes": "Hit twice",
-    "Reckless Boost": "Reckless boost",
-    "Magic Coat Affected": "Affected by magic coat",
-    "Horn Based": "Mighty Horn boost",
-    "Strong Jaw Boost": "Strong Jaw boost",
-    "Sound": "Is a sound move",
-    "Mega Launcher Boost": "Mega Launcher Boost",
-    "Ballistic": "Is a bullet move",
-    "Dmg Underwater": "Damage foes under water",
-    "Weather Based": "Changes with the weather",
-    "Powder": "Powder move",
-    "Dmg In Air": "Damages foes in air",
-    "Dmg Underground": "Damages foes underground",
-    "Bone Based": "Is a bonemove",
+    "Makes Contact": "接触类招式",
+    "Kings Rock Affected": "可触发王者之证",
+    "High Crit": "容易击中要害",
+    "Iron Fist Boost": "受铁拳加成",
+    "Sheer Force Boost": "受强行加成",
+    "Keen Edge Boost": "受利刃加成",
+    "Air Based": "受巨翼加成",
+    "Snatch Affected": "可被抢夺",
+    "Dance": "舞蹈招式",
+    "Always Crit": "必定击中要害",
+    "Field Based": "受场地探索者加成",
+    "Striker Boost": "受打击者加成",
+    "Two Strikes": "攻击两次",
+    "Reckless Boost": "受舍身加成",
+    "Magic Coat Affected": "受魔法反射影响",
+    "Horn Based": "受强角加成",
+    "Strong Jaw Boost": "受强颚加成",
+    "Sound": "声音招式",
+    "Mega Launcher Boost": "受超级发射器加成",
+    "Ballistic": "弹道招式",
+    "Dmg Underwater": "可命中潜水目标",
+    "Weather Based": "随天气变化",
+    "Powder": "粉末招式",
+    "Dmg In Air": "可命中空中目标",
+    "Dmg Underground": "可命中地下目标",
+    "Bone Based": "骨系招式",
     "Dmg Ungrounded Ignore Type If Flying": "",
-    "Thaw User": "Unfreeze the user",
-    "Protection Move": "Gives protection to the user",
-    "Dmg 2x In Air": "Damage the foes in air with 2X damage",
-    "Stat Stages Ignored": "Ignore Stats boost",
-    "Hit In Substitute": "Hit Throught Substitute",
-    "Target Ability Ignored": "Target Ability is ignored",
-    "FrostBite Hit": "May inflict frostbite",
-    "Burn Hit": "May inflict burn",
-    "Sleep": "May inflict sleep",
-    "Confuse": "May inflict confusion",
-    "Confuse Hit": "May inflict confusion",
-    "Paralyze": "May inflict paralyze",
-    "Flinch Hit": "May inflict flinch",
-    "Attack Down Hit": "May down Attack",
-    "Defense Down Hit": "May down Defense",
-    "Special Attack Down Hit": "May down Special Attack",
-    "Special Defense Down Hit": "May down Special Defense",
-    "Speed Down Hit": "May down Speed",
-    "Attack Down Hit 2": "May down Attack Twofold",
-    "Defense Down Hit 2": "May down Defense Twofold",
-    "Special Attack Down Hit 2": "May down SpeciReduxal Attack Twofold",
-    "Special Defense Down Hit 2": "May down Special Defense Twofold",
-    "Speed Down Hit 2": "May down Speed Twofold",
-    "Always Crit": "Always crit",
-    "Protect Affected": "Affected by protect",
-    "Mirror Move Affected": "Affected by mirror move",
-    "Technician": "Technician",
-    "Perfectionnist": "Perfectionnist",
-    "High Crit Rate": "High Crit Rate",
-    "Air/Wing Based": "Air/Wing Based",
-    "Dance Move": "Dance Move",
-    "Always Crits": "Always Crits",
-    "Hammer Based": "Hammer Based",
-    "Kick Based": "Kick Based",
-    "Causes Recoil": "Causes Recoil",
-    "Drill Based": "Drill Based",
-    "Sound Based": "Sound Based",
-    "Bullet Move": "Bullet Move",
-    "Throw Based": "Throw Based",
-    "Lunar Move": "Lunar Move",
-    "Arrow Based": "Arrow Based"
+    "Thaw User": "可解除自身冰冻",
+    "Protection Move": "保护类招式",
+    "Dmg 2x In Air": "对空中目标伤害翻倍",
+    "Stat Stages Ignored": "无视能力变化",
+    "Hit In Substitute": "可穿透替身",
+    "Target Ability Ignored": "无视目标特性",
+    "FrostBite Hit": "可能造成冻伤",
+    "Burn Hit": "可能造成灼伤",
+    "Sleep": "可能造成睡眠",
+    "Confuse": "可能造成混乱",
+    "Confuse Hit": "可能造成混乱",
+    "Paralyze": "可能造成麻痹",
+    "Flinch Hit": "可能造成畏缩",
+    "Attack Down Hit": "可能降低攻击",
+    "Defense Down Hit": "可能降低防御",
+    "Special Attack Down Hit": "可能降低特攻",
+    "Special Defense Down Hit": "可能降低特防",
+    "Speed Down Hit": "可能降低速度",
+    "Attack Down Hit 2": "可能大幅降低攻击",
+    "Defense Down Hit 2": "可能大幅降低防御",
+    "Special Attack Down Hit 2": "可能大幅降低特攻",
+    "Special Defense Down Hit 2": "可能大幅降低特防",
+    "Speed Down Hit 2": "可能大幅降低速度",
+    "Protect Affected": "受守住影响",
+    "Mirror Move Affected": "可被鹦鹉学舌",
+    "Technician": "技术高手",
+    "Perfectionnist": "完美主义",
+    "High Crit Rate": "高要害率",
+    "Air/Wing Based": "飞翼类招式",
+    "Dance Move": "舞蹈招式",
+    "Always Crits": "必定击中要害",
+    "Hammer Based": "锤击类招式",
+    "Kick Based": "踢击类招式",
+    "Causes Recoil": "会造成反作用力伤害",
+    "Drill Based": "钻击类招式",
+    "Sound Based": "声音招式",
+    "Bullet Move": "弹丸类招式",
+    "Throw Based": "投掷类招式",
+    "Lunar Move": "月亮类招式",
+    "Arrow Based": "箭矢类招式"
 }
 /* window.debugMoveFlags = ()=>{
     const list =  {}
@@ -197,10 +219,10 @@ export function moveOverlay(moveId, interactive=true) {
     
     const powerNumber = e("div", "move-overlay-fill", move.pwr || "?")
     const stats = e("div", "move-overlay-stats")
-    const statsAcc = e("div", "move-overlay-acc", `Acc: ${move.acc || "--"}`)
-    const statsPP = e("div", "move-overlay-pp", `PP: ${move.pp}`)
-    const statsPrio = e("div", "move-overlay-prio", `Prio: ${move.prio}`)
-    const statsChance = e("div", "move-overlay-chance", `Chance: ${move.chance}`)
+    const statsAcc = e("div", "move-overlay-acc", `命中：${move.acc || "--"}`)
+    const statsPP = e("div", "move-overlay-pp", `PP：${move.pp}`)
+    const statsPrio = e("div", "move-overlay-prio", `优先度：${move.prio}`)
+    const statsChance = e("div", "move-overlay-chance", `追加概率：${move.chance}`)
     const otherInfos = e("div", "move-overlay-other")
     const typeDiv = e("div", "move-overlay-types")
     const type1 = gameData.typeT[move.types[0]]
@@ -211,7 +233,7 @@ export function moveOverlay(moveId, interactive=true) {
     
     const splitDiv = e('div', getHintInteractibilityClass())
     const split = e("img", "move-overlay-img pixelated")
-    split.src = `./icons/${gameData.splitT[move.split]}.png`
+    split.src = `./icons/${getSplitIconKey(move.split)}.png`
     
     const effectsDiv = e("div", "move-overlay-effects")
     listMoveFlags(move.flags.map((x) => gameData.flagsT[x]).concat(gameData.effT[move.eff]), $(effectsDiv), interactive?triggerMoveRefresh:null)

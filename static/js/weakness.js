@@ -1,5 +1,36 @@
 import { gameData } from "./data_version.js"
 
+const canonicalTypes = [
+    "Normal",
+    "Fighting",
+    "Fire",
+    "Ice",
+    "Electric",
+    "Bug",
+    "Flying",
+    "Steel",
+    "Grass",
+    "Ground",
+    "Poison",
+    "Dark",
+    "Water",
+    "Psychic",
+    "Rock",
+    "Dragon",
+    "Ghost",
+    "Fairy",
+    "Stellar",
+    "Mystery",
+    "None"
+]
+
+function getCanonicalType(type){
+    if (typeChart[type]) return type
+    const translatedTypeIndex = gameData?.typeT?.indexOf(type)
+    if (translatedTypeIndex != -1) return canonicalTypes[translatedTypeIndex]
+    return type
+}
+
 
 const typeChart = {
     "Normal": [["Ghost"],
@@ -187,12 +218,15 @@ const abilityThatAdds4TimesWeakness = {
 export function abilitiesToAddedType(abis){
     for (const abi of abis){
         const addedType = abilityAddingType[gameData.abilities[abi].name]
-        if (addedType) return gameData.typeT.indexOf(addedType)
+        if (addedType) return canonicalTypes.indexOf(addedType)
     }
     return undefined
 }
 
 export function getTypeEffectiveness(attackerT, defT){
+    attackerT = getCanonicalType(attackerT)
+    defT = getCanonicalType(defT)
+    if (!typeChart[defT]) return 1
     let xRange = [0,0.5,2]
     let i = 0
     for (const typeDef of typeChart[defT]){
@@ -233,7 +267,7 @@ export function getDefensiveCoverage(specie, abiID){
     const abiNames          = abisID.map(x => gameData.abilities[x].name)
     const defTypes          = [...new Set([...specie.stats.types, abilitiesToAddedType(abisID)])]
     .filter(x => x != undefined)
-    .map(x => gameData.typeT[x])
+    .map(x => canonicalTypes[x])
     .filter(x => x)
     const has_ripen_ability = hasAbility(abiNames, "Ripen")
     const has_steelworker   = hasAbility(abiNames, "Steelworker") && hasType(defTypes, "Steel")
@@ -329,7 +363,7 @@ export function getOffensiveCoverage(moves, abis){
     const typesLen = gameData.typeT.length
     const offensiveCoverage = new Array(typesLen).fill(0)
     for (let i = 0; i < typesLen; i++){
-        const defT = gameData.typeT[i]
+        const defT = canonicalTypes[i]
         moves.forEach((moveTypes)=>{
             moveTypes.forEach((atkT)=>{
                 const typeEffectiveness = getTypeEffectiveness(atkT, defT)

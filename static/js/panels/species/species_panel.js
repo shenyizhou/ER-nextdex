@@ -13,6 +13,69 @@ import { feedCommunitySets } from "./community_sets.js"
 
 export let currentSpecieID = 1
 
+const splitIconMap = {
+    物理: "PHYSICAL",
+    特殊: "SPECIAL",
+    变化: "STATUS",
+    取最高攻击: "PHYSICAL",
+    取最高伤害: "SPECIAL",
+    攻击防御: "HITS_DEF",
+    攻击特防: "HITS_SPDEF",
+    PHYSICAL: "PHYSICAL",
+    SPECIAL: "SPECIAL",
+    STATUS: "STATUS",
+    USE_HIGHEST_OFFENSE: "PHYSICAL",
+    USE_HIGHEST_DAMAGE: "SPECIAL",
+    HITS_DEF: "HITS_DEF",
+    HITS_SPDEF: "HITS_SPDEF",
+}
+
+const evolutionReasonMap = {
+    EVO_LEVEL: (reason) => `等级达到 ${reason} 时进化`,
+    等级进化: (reason) => `等级达到 ${reason} 时进化`,
+    EVO_MEGA_EVOLUTION: (reason) => reason ? `使用 ${convertItemNames(reason)} 超级进化` : "可超级进化",
+    超级进化: (reason) => reason ? `使用 ${convertItemNames(reason)} 超级进化` : "可超级进化",
+    EVO_ITEM: (reason) => `使用 ${convertItemNames(reason)} 进化`,
+    EVO_MOVE: (reason) => `学会 ${convertMoveNames(reason)} 后进化`,
+    EVO_LEVEL_ATK_LT_DEF: () => "等级提升且攻击小于防御时进化",
+    EVO_LEVEL_ATK_GT_DEF: () => "等级提升且攻击大于防御时进化",
+    EVO_LEVEL_ATK_EQ_DEF: () => "等级提升且攻击等于防御时进化",
+    EVO_LEVEL_SILCOON: () => "等级提升后进化",
+    EVO_LEVEL_CASCOON: () => "等级提升后进化",
+    EVO_PRIMAL_REVERSION: () => "可原始回归",
+    原始回归: () => "可原始回归",
+    EVO_ITEM_MALE: (reason) => `雄性使用 ${convertItemNames(reason)} 进化`,
+    EVO_ITEM_FEMALE: (reason) => `雌性使用 ${convertItemNames(reason)} 进化`,
+    EVO_LEVEL_NINJASK: () => "等级提升后进化",
+    EVO_LEVEL_SHEDINJA: () => "满足条件时进化",
+    EVO_MOVE_MEGA_EVOLUTION: (reason) => reason ? `学会 ${convertMoveNames(reason)} 后超级进化` : "满足条件后超级进化",
+    招式触发超级进化: (reason) => reason ? `学会 ${convertMoveNames(reason)} 后超级进化` : "满足条件后超级进化",
+    EVO_LEVEL_FEMALE: (reason) => `雌性等级达到 ${reason} 时进化`,
+    雌性等级进化: (reason) => `雌性等级达到 ${reason} 时进化`,
+    EVO_LEVEL_MALE: (reason) => `雄性等级达到 ${reason} 时进化`,
+    雄性等级进化: (reason) => `雄性等级达到 ${reason} 时进化`,
+    EVO_SPECIFIC_MON_IN_PARTY: (reason) => `队伍中存在 ${convertSpeciesNames(reason)} 时进化`,
+    EVO_LEVEL_NIGHT: (reason) => `夜晚等级达到 ${reason} 时进化`,
+    EVO_LEVEL_DUSK: (reason) => `黄昏等级达到 ${reason} 时进化`,
+    EVO_LEVEL_DAY: (reason) => `白天等级达到 ${reason} 时进化`,
+    EVO_SPECIFIC_MAPSEC: (reason) => `在 ${convertMapName(reason)} 升级时进化`,
+}
+
+const encounterFieldMap = {
+    land: "陆地",
+    water: "水面",
+    fish: "垂钓",
+    honey: "甜甜蜜",
+    rock: "碎岩",
+    hidden: "隐藏遭遇",
+    given: "赠送",
+}
+
+function getSplitIconKey(splitID){
+    const split = gameData.splitT[splitID]
+    return splitIconMap[split] || "STATUS"
+}
+
 const spriteAlternateFunc = [
     getSpritesURL,
     getSpritesShinyURL,
@@ -152,7 +215,7 @@ function filterMoves(moveIDlist) {
  */
 export function setSplitMove(move) {
     const nodeMoveSplit = document.createElement('img')
-    nodeMoveSplit.src = `./icons/${gameData.splitT[move.split]}.png`
+    nodeMoveSplit.src = `./icons/${getSplitIconKey(move.split)}.png`
     nodeMoveSplit.className = "species-move-sprite"
     return nodeMoveSplit
 }
@@ -401,7 +464,7 @@ export function setEvos(evos) {
         node.className = "evo-parent" // i dunno how do classname it
         const intoSpecieNode = document.createElement('span')
         intoSpecieNode.className = "evo-into"
-        intoSpecieNode.innerText = evo.from ? "From" : "Into "
+        intoSpecieNode.innerText = evo.from ? "由 " : "可进化为 "
         intoSpecieNode.appendChild(createSpeciesBlock(evo.in))
         node.append(intoSpecieNode)
         const reason = document.createElement('div')
@@ -434,30 +497,11 @@ export function createSpeciesBlock(specieId) {
  * @returns text
  */
 function setEvoReason(kindID, reason) {
-    return {
-        "EVO_LEVEL": `Evolves at level: ${reason}`,
-        "EVO_MEGA_EVOLUTION": `Mega-evolves with ${convertItemNames(reason)}`,
-        "EVO_ITEM": `Evolves with ${convertItemNames(reason)}`,
-        "EVO_MOVE": `Evolves with ${convertMoveNames(reason)}`,
-        "EVO_LEVEL_ATK_LT_DEF": `Evolves if Atk < def`,
-        "EVO_LEVEL_ATK_GT_DEF": `Evolves if Atk > def`,
-        "EVO_LEVEL_ATK_EQ_DEF": `Evolves if Atk = def`,
-        "EVO_LEVEL_SILCOON": "???",
-        "EVO_LEVEL_CASCOON": "???",
-        "EVO_PRIMAL_REVERSION": "???",
-        "EVO_ITEM_MALE": `Evolves with ${convertItemNames(reason)}`,
-        "EVO_ITEM_FEMALE": `Evolves with ${convertItemNames(reason)}`,
-        "EVO_LEVEL_NINJASK": "???",
-        "EVO_LEVEL_SHEDINJA": "???",
-        "EVO_MOVE_MEGA_EVOLUTION": `Mega-evolves with ${convertMoveNames(reason)}`,
-        "EVO_LEVEL_FEMALE": `Evolves at level: ${reason} if female`,
-        "EVO_LEVEL_MALE": `Evolves at level: ${reason} if male`,
-        "EVO_SPECIFIC_MON_IN_PARTY": `Evolves if ${convertSpeciesNames(reason)} is in party`,
-        "EVO_LEVEL_NIGHT": `Evolves at night if level ${reason}`,
-        "EVO_LEVEL_DUSK": `Evolves at dusk if level ${reason}`,
-        "EVO_LEVEL_DAY": `Evolves at day if level ${reason}`,
-        "EVO_SPECIFIC_MAPSEC": `Evolves when level up at ${convertMapName(reason)}`
-    }[gameData.evoKindT[kindID]]
+    const evoKind = gameData.evoKindT[kindID]
+    const formatter = evolutionReasonMap[evoKind]
+    if (formatter) return formatter(reason)
+    if (reason) return `进化条件：${reason}`
+    return "特殊进化"
 }
 
 
@@ -468,15 +512,15 @@ function setLocations(locations, SEnc) {
         if (!loc) continue
         const node = document.createElement('div')
         node.className = "specie-locs"
-        let locationString = `Can be found at ${gameData.mapsT[loc.id]}`
+        let locationString = `可在 ${gameData.mapsT[loc.id]} 遭遇`
 
         let first = true
         for (const field of value) {
             if (first) first = false
             else {
-                locationString += ` and`
+                locationString += "、"
             }
-            locationString += ` on ${capitalizeFirstLetter(field)}`
+            locationString += encounterFieldMap[field] || capitalizeFirstLetter(field)
         }
         node.innerText = locationString
         node.onclick = () => {
@@ -486,7 +530,7 @@ function setLocations(locations, SEnc) {
     }
     for (const {how, map, locaId} of SEnc) {
         const node = e('div', 'specie-locs-scripted',
-            `Can be found at ${gameData.mapsT[map]} as a ${gameData.scriptedEncoutersHowT[how]}`, {
+            `可在 ${gameData.mapsT[map]} 以${gameData.scriptedEncoutersHowT[how]}方式获得`, {
             onclick: () => {
                 if (typeof locaId === "undefined") return
                 redirectLocation(locaId)

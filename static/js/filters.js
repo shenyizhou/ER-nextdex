@@ -1,4 +1,4 @@
-import { search, onkeySearchFilter } from "./search.js"
+import { search, onkeySearchFilter, getMainSearchKey, getQueryKeyLabel } from "./search.js"
 import { e, JSHAC, clickOutsideToHide, setLongClickSelection } from "./utils.js"
 import { setAllMoves } from "./panels/species/species_panel.js"
 import { capitalizeFirstLetter } from "./utils.js"
@@ -9,21 +9,21 @@ let filtersCounter = 0
 
 export const filterDatas = [
     {
-        name: "Species",
+        name: "宝可梦",
         filters: [],
         modify: function(){
             trickFilterSearch(0)
         },
     },
     {
-        name: "Abilities",
+        name: "特性",
         filters: [],
         modify: function(){
             trickFilterSearch(1)
         },
     },
     {
-        name: "Moves",
+        name: "招式",
         filters: [],
         modify: function(){
             trickFilterSearch(2)
@@ -31,14 +31,14 @@ export const filterDatas = [
         },
     },
     {
-        name: "Locations",
+        name: "地点",
         filters: [],
         modify: function(){
             trickFilterSearch(3)
         },
     },
     {
-        name: "Trainers",
+        name: "训练师",
         filters: [],
         modify: function(){
             trickFilterSearch(4)
@@ -62,7 +62,7 @@ export function getQueries(){
     allQueries = [{ //this is the top bar search
         op:"AND",
         not: false, //not yet implemented
-        k: $('#search-keys').val().toLowerCase(),
+        k: getMainSearchKey().toLowerCase(),
         data: $('#search-bar').val().toLowerCase().trim(),
         suggestion: $('#search-bar')[0] === search.suggestionInput
     }]
@@ -77,7 +77,7 @@ export function getQueries(){
                 op:"AND",
                 //if you use data('state') jquery util here you're fucked for no acceptable reason
                 not: field.querySelector('.filter-not').dataset.state === "on" ? true : false,
-                k: field.querySelector('.filter-key').value.toLowerCase(),
+                k: (field.querySelector('.filter-key').dataset.key || search.queryKeys[0]).toLowerCase(),
                 data: field.querySelector('.filter-search').value.toLowerCase().trim(),
                 suggestion: field.querySelector('.filter-search') === search.suggestionInput
             }
@@ -145,7 +145,7 @@ export function appendFilter(panelID, initKey = "", initData = ""){
     incFiltersCounter()
     const divField = e("div", "filter-field")
 
-    const divNot = e("div", "filter-not", "¿?")
+    const divNot = e("div", "filter-not", "非")
     divNot.type = "button"
     divNot.dataset.state = "off"
 
@@ -153,7 +153,8 @@ export function appendFilter(panelID, initKey = "", initData = ""){
 
     const inputKey = e('input', "filter-key")
     inputKey.type = "button"
-    inputKey.value = initKey || search.queryKeys[0] || "Name"
+    inputKey.dataset.key = initKey || search.queryKeys[0] || "Name"
+    inputKey.value = getQueryKeyLabel(inputKey.dataset.key)
     inputKey.onchange = ()=>{
         filterDatas[panelID].modify()
     }
@@ -162,9 +163,10 @@ export function appendFilter(panelID, initKey = "", initData = ""){
     divKeySelection.style.display = "none"
 
     const createSelectable = (key)=>{
-        const option = e('div','', key)
+        const option = e('div','', getQueryKeyLabel(key))
         option.onclick = ()=>{
-            inputKey.value = key
+            inputKey.dataset.key = key
+            inputKey.value = getQueryKeyLabel(key)
             $(divKeySelection).hide()
             filterDatas[panelID].modify()
         }
@@ -691,8 +693,13 @@ export function spinOnRemoveFilter(){
  */
 export function hasFilter(key, data, panelID){
     const row = $('#filter-data').children().eq(panelID)
-    return row.find(`.filter-key[value="${key.toLowerCase()}"]`) &&
-        row.find(`.filter-search[value="${data}"]`)[0]
+    let matchedField
+    row.find('.filter-field').each((_index, field)=>{
+        const filterKey = field.querySelector('.filter-key')?.dataset.key?.toLowerCase()
+        const filterData = field.querySelector('.filter-search')?.value
+        if (filterKey === key.toLowerCase() && filterData === data) matchedField = field
+    })
+    return matchedField
 }
 
 export function setupFilters(){
@@ -756,7 +763,7 @@ function setupFiltersRow(){
                 e('div', 'filter-list'), [
                     e('div', 'filter-add', null, {onclick:filterAdd}),[
                         e('span', 'filter-plus', '+'),
-                        e('span', '', 'Add a filter')
+                        e('span', '', '添加筛选')
                     ]
                 ]
             ]

@@ -10,6 +10,9 @@ export let gameData;
 // each time the data is modified, this is updated
 // so the client checks if it have the latest version by checking lo
 const LATEST_DATA_VERSION = "46"/*%%VERSION%%*/
+const LOCALIZED_DATA_FILE = "js/data/gameData.zh.json"
+const LOCALIZED_DATA_CACHE_KEY = "data:zh"
+const LOCALIZED_VERSION_CACHE_KEY = "dataversion:zh"
 
 const allVersions = [
     "1.6.1",
@@ -49,12 +52,12 @@ export function changeVersion(version=defaultVersion, firstLoad=false){
         console.warn(`no such version : ${version}, defaulting to ${defaultVersion}`)
         version = defaultVersion
     }
-    const savedVersion = fetchFromLocalstorage("dataversion"+version)
+    const savedVersion = fetchFromLocalstorage(LOCALIZED_VERSION_CACHE_KEY)
     saveToLocalstorage("lastusedversion", version)
     if (savedVersion && savedVersion == LATEST_DATA_VERSION &&
         $('#enable-storage')[0].checked && !forceRefresh){
         try{
-            gameData = JSON.parse(fetchFromLocalstorage("data"+version))
+            gameData = JSON.parse(fetchFromLocalstorage(LOCALIZED_DATA_CACHE_KEY))
             if (gameData) {
                 window.gameData = gameData
                 console.log("took gamedata from storage")
@@ -66,7 +69,7 @@ export function changeVersion(version=defaultVersion, firstLoad=false){
         }
     }
     //fetch remotely
-    fetch(`js/data/gameDataV${version}.json`, {cache: "no-store"})
+    fetch(LOCALIZED_DATA_FILE, {cache: "no-store"})
         .then((response) => response.json())
         .then((data) => {
             console.log("took gamedata from server")
@@ -74,8 +77,8 @@ export function changeVersion(version=defaultVersion, firstLoad=false){
             window.gameData = gameData
             try{
                 //save first, because it causes issue after
-                saveToLocalstorage("data"+version, gameData)
-                saveToLocalstorage("dataversion"+version, LATEST_DATA_VERSION)
+                saveToLocalstorage(LOCALIZED_DATA_CACHE_KEY, gameData)
+                saveToLocalstorage(LOCALIZED_VERSION_CACHE_KEY, LATEST_DATA_VERSION)
             }catch(_e){
                 // bruh
             }
@@ -135,4 +138,3 @@ export function setupDataVersionning(firstLoad = false){
         changeCompareData(version,comparedVersion)
     })
 }
-
