@@ -22,7 +22,7 @@ steps:
       NODE_OPTIONS: '--max-old-space-size=1024'
     commands:
       # 安装项目依赖
-      - npm ci
+      - npm install
       # 编译 TS 代码并生成最新的图鉴数据 gameData.json
       - npm run run
       # 运行翻译脚本生成 gameData.zh.json (基于 glossary)
