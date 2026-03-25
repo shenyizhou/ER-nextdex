@@ -2,7 +2,19 @@ kind: pipeline
 type: docker
 name: default
 
+clone:
+  disable: true
+
 steps:
+  # 0. 手动执行克隆（修复默认拉取 master 的问题）
+  - name: clone
+    image: alpine/git
+    commands:
+      - git init
+      - git remote add origin $DRONE_REMOTE_URL
+      - git fetch origin $DRONE_COMMIT_REF
+      - git checkout -qf FETCH_HEAD
+
   # 1. 编译数据与翻译
   - name: build-data
     image: node:20
@@ -15,8 +27,6 @@ steps:
       - npm run run
       # 运行翻译脚本生成 gameData.zh.json (基于 glossary)
       - npm run translate-gamedata
-      # 如果需要跑 webpack 压缩，可以保留这行
-      # - npm run webpack
 
   # 2. 部署前端 (复制到宿主机挂载目录)
   - name: deploy-frontend
@@ -26,12 +36,13 @@ steps:
         path: /var/www/ernext
     commands:
       - mkdir -p /var/www/ernext
-      # 网站核心文件在 static 目录下，包含生成的最新 gameData 数据，全部复制到宿主机的 web 目录
+      # 网站核心文件在 static 目录下，包含生成的最新中文数据，全部复制到宿主机的 web 目录
       - cp -r static/* /var/www/ernext/
     when:
       branch:
         - main
         - master
+        - feature/*
 
 volumes:
   - name: wwwroot
